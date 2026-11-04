@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ bank_name }} — Relationship 360 Executive Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/app.css?v=4.0.0" />
+</head>
+<body>
+  <!-- Strict 3-Zone Top Bar -->
+  <header class="topbar">
+    <a href="#overview" class="brand-wordmark">{{ bank_name }}</a>
+    <nav class="topnav" aria-label="Primary Workspace Navigation">
+      <a href="#overview">Relationship 360</a>
+      <a href="#trajectory">Trajectory &amp; Products</a>
+      <a href="#recommendations">Next Best Offer</a>
+      <a href="#digital-directors">Digital &amp; Directors</a>
+    </nav>
+    <div class="topbar-actions">
+      <a id="download-brief-link" href="#" class="btn-primary">Download Visit Brief</a>
+    </div>
+  </header>
+
+  <!-- Executive Workspace Toolbar -->
+  <section class="toolbar" aria-label="Customer and CIF Controls">
+    <div class="toolbar-inner">
+      <div class="toolbar-left">
+        <label for="customer-select" class="toolbar-label">Customer:</label>
+        <select id="customer-select" class="select-control" aria-label="Select primary customer"></select>
+
+        <form id="cif-search-form" class="cif-search-form" autocomplete="off">
+          <input
+            id="cif-input"
+            type="text"
+            class="input-control font-mono"
+            placeholder="Enter CIF (e.g. 51012681)..."
+            aria-label="Filter or open by CIF"
+          />
+          <button type="submit" class="btn-secondary">Open CIF</button>
+        </form>
+      </div>
+
+      <div class="toolbar-right">
+        <div class="segmented-group" role="group" aria-label="Comparison Basis">
+          <button type="button" id="basis-monthly" class="seg-btn active">Monthly (vs Prior Avg)</button>
+          <button type="button" id="basis-vsbf" class="seg-btn">Vs BF (Dec-25 Close)</button>
+        </div>
+        <button type="button" id="presentation-btn" class="btn-accent">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          CEO Presentation Mode
+        </button>
+      </div>
+    </div>
+    <div id="error-banner" class="error-banner" hidden></div>
+  </section>
+
+  <!-- Director Return Banner -->
+  <div id="director-return-banner" class="director-banner" hidden>
+    <div>
+      <div class="director-banner-kicker">Linked Director Personal Profile · Isolated from Corporate Totals</div>
+      <div id="director-banner-text" class="director-banner-title"></div>
+    </div>
+    <button type="button" id="back-to-company-btn" class="btn-light">← Back to Company</button>
+  </div>
+
+  <!-- Main Workspace -->
+  <main class="workspace">
+    <!-- Hero Company Intelligence & 4-KPI Strip -->
+    <section id="overview" class="section-block">
+      <div class="hero-grid">
+        <div class="surface-card hero-main">
+          <div class="meta-line">
+            <span id="customer-cif-badge" class="font-mono font-bold">CIF —</span>
+            <span>·</span>
+            <span id="customer-industry" class="text-accent font-semibold">—</span>
+            <span>·</span>
+            <span>Reporting Month: <strong id="reporting-month-label" class="font-mono">—</strong></span>
+          </div>
+
+          <div class="hero-title-row">
+            <h1 id="company-name" class="hero-title">Loading Customer...</h1>
+            <button type="button" id="refresh-overview-btn" class="btn-secondary">Refresh Public Overview</button>
+          </div>
+
+          <p id="company-description" class="company-prose"></p>
+
+          <div class="hero-footer">
+            <div id="company-links" class="company-links"></div>
+          </div>
+        </div>
+
+        <div class="surface-card hero-side">
+          <div class="card-header-line">
+            <h2 class="card-subtitle">Separate Non-Funded &amp; Trade Measures</h2>
+            <span class="font-mono text-xs text-muted">LKR Mn</span>
+          </div>
+          <div class="measure-list">
+            <div class="measure-row">
+              <span>Non-Funded (Guarantees / LCs)</span>
+              <strong id="non-funded-val" class="font-mono">—</strong>
+            </div>
+            <div class="measure-row">
+              <span>Remittances (REMIT DR)</span>
+              <strong id="remittance-val" class="font-mono">—</strong>
+            </div>
+            <div class="measure-row">
+              <span>LMS Credit Balances (LMS CR)</span>
+              <strong id="lms-cr-val" class="font-mono">—</strong>
+            </div>
+          </div>
+          <p class="governance-note">
+            Reported CIF limits are not allocated to individual products or converted into headroom ratios from monthly averages.
+          </p>
+        </div>
+      </div>
+
+      <!-- 4-Column Executive KPI Strip -->
+      <div class="kpi-strip">
+        <div class="surface-card kpi-card">
+          <div class="kpi-head">
+            <span>Latest Avg Funded Assets</span>
+            <span class="font-mono">AVG_BAL_DR</span>
+          </div>
+          <div id="kpi-assets" class="kpi-value font-mono">—</div>
+          <div id="kpi-assets-delta" class="kpi-delta font-mono">—</div>
+        </div>
+
+        <div class="surface-card kpi-card">
+          <div class="kpi-head">
+            <span>Latest Avg Bank Liabilities</span>
+            <span class="font-mono">AVG_BAL_CR</span>
+          </div>
+          <div id="kpi-liabilities" class="kpi-value text-accent font-mono">—</div>
+          <div id="kpi-liabilities-delta" class="kpi-delta font-mono">—</div>
+        </div>
+
+        <div class="surface-card kpi-card">
+          <div class="kpi-head">
+            <span>2026 YTD Signed Revenue</span>
+            <span class="font-mono">YTD CONTRIBUTION</span>
+          </div>
+          <div id="kpi-revenue" class="kpi-value text-success font-mono">—</div>
+          <div id="kpi-revenue-sub" class="kpi-delta font-mono">—</div>
+        </div>
+
+        <div class="surface-card kpi-card">
+          <div class="kpi-head">
+            <span>Reported CIF Facility Limit</span>
+            <span class="font-mono">CIF_Limit.csv</span>
+          </div>
+          <div id="kpi-limit" class="kpi-value font-mono">—</div>
+          <div class="kpi-delta text-muted">CIF-level reported limit snapshot</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Trajectory Chart -->
+    <section id="trajectory" class="surface-card section-card">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">01. Balance &amp; Revenue Trajectory · Monthly Averages vs Dec-25 Closing BF</div>
+          <h2 id="chart-title" class="section-title">Consolidated CIF Position</h2>
+        </div>
+
+        <div class="chart-controls">
+          <div class="segmented-group" role="group" aria-label="Chart Metric">
+            <button type="button" data-mode="assets" class="seg-btn chart-mode-btn active">Funded Assets</button>
+            <button type="button" data-mode="liabilities" class="seg-btn chart-mode-btn">Bank Liabilities</button>
+            <button type="button" data-mode="revenue" class="seg-btn chart-mode-btn">2026 YTD Revenue</button>
+          </div>
+
+          <select id="product-select" class="select-control" aria-label="Filter chart by product">
+            <option value="ALL">All Products</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="chart-readout" class="chart-readout font-mono"></div>
+      <div id="chart-container" class="chart-container"></div>
+    </section>
+
+    <!-- Next Best Product Priorities (OpenRouter AI) -->
+    <section id="recommendations" class="surface-card section-card">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">02. Next Best Product Priorities · OpenRouter AI Gateway</div>
+          <h2 class="section-title">Recommended Product Offers for Officer Visit</h2>
+        </div>
+        <button type="button" id="refresh-ai-btn" class="btn-accent">Synthesize via OpenRouter AI</button>
+      </div>
+
+      <div id="recommendations-grid" class="recommendations-grid"></div>
+    </section>
+
+    <!-- Digital Channels & Linked Directors -->
+    <section id="digital-directors" class="split-grid">
+      <div class="surface-card section-card">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">03. Digital Channel Footprint · CIF_DIGITAL_ACCESS.xlsx</div>
+            <h2 class="section-title">Five Platform Registrations</h2>
+          </div>
+          <span id="digital-summary-count" class="font-mono text-xs font-bold"></span>
+        </div>
+        <div id="digital-list" class="digital-list"></div>
+      </div>
+
+      <div class="surface-card section-card">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">04. Linked Director Relationships · CIF_Director.csv</div>
+            <h2 id="directors-heading" class="section-title">Named Board &amp; Executive Profiles</h2>
+          </div>
+        </div>
+        <div id="directors-list" class="directors-list"></div>
+      </div>
+    </section>
+  </main>
+  <script src="/app.js?v=4.0.0" defer></script>
+</body>
+</html>

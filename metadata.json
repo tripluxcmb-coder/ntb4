@@ -1,0 +1,6 @@
+{
+  "name": "Nations Trust Bank — Relationship 360 Executive Intelligence",
+  "description": "Executive customer visit intelligence platform for corporate banking officers, featuring CIF product profile summaries, monthly balance trajectories, director relationship networks, and OpenRouter AI next-best-product recommendations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
